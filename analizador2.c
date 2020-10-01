@@ -10,14 +10,11 @@
 #include <linux/wait.h>
 #include "call_array.h"
 //--------------------------
-
+#include "syscall_array_mag.h"
 #define MAXCHAR 1000
 #define MAX_CALLS 500
 
-struct CALL {
-    const char *name;
-    int counter;
-};
+
 int call_printer(struct CALL call_table[MAX_CALLS]);
 int analiza(int argc, char * argv[]);
 void print_call(int call);
