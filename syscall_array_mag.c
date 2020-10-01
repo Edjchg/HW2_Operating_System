@@ -7,7 +7,6 @@
 #include <linux/string.h>
 #include "syscall_array_mag.h"
 #include "call_array.h"
-#include <stdio.h>
 
 void init_call_array(struct CALL * head){
     int i  = 0;
