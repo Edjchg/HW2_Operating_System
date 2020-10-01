@@ -6,13 +6,19 @@
 //Modo kernel--------------
 
 #include <linux/kernel.h>
-#include <linux/syscalls.h>
+//#include <linux/syscalls.h>
 #include <linux/wait.h>
-
+#include "call_array.h"
 //--------------------------
 
 #define MAXCHAR 1000
+#define MAX_CALLS 500
 
+struct CALL {
+    const char *name;
+    int counter;
+};
+int call_printer(struct CALL call_table[MAX_CALLS]);
 int analiza(int argc, char * argv[]);
 void print_call(int call);
 
@@ -22,6 +28,8 @@ int main(int argc, char * argv[] ){
 }
 
 int analiza(int argc, char * argv[]){
+struct CALL call_table[MAX_CALLS];
+
  int status; 
  //pid_t pid;
  int pid;
@@ -44,7 +52,12 @@ int analiza(int argc, char * argv[]){
        if(!in_call){
        	 //Descomentar en compilacion de kernel.
          //printk("La llamada que hizo el subproceso es: %lli \n", regs.orig_rax);
-         write(1, "Se ha detectado una llamada\n", 28);
+         const char *llamada = getcall(regs.orig_rax);
+         write(1, "Se ha detectado una llamada ", 28);
+         write(1, llamada, sizeof(llamada));
+         write(1, "\n", 1);
+         call_table[regs.orig_rax].name = llamada;
+         call_table[regs.orig_rax].counter++;
          in_call=1;
          counter ++;
        }
@@ -54,10 +67,30 @@ int analiza(int argc, char * argv[]){
      wait(&status); 
      }
    }
+   call_printer(call_table);
    //printf("Total Number of System Calls=%d\n", counter);
    return 0; 
 
 
+}
+
+int call_printer(struct CALL call_tables[MAX_CALLS]){
+    int index = 0;
+    write(1, "+--------------------+--------------------+\n", 44);
+    write(1, "|                  Calls                  |\n", 44);
+    write(1, "+--------------------+--------------------+\n", 44);
+    write(1, "| Name               | Counter            |\n", 44);
+    write(1, "+--------------------+--------------------+\n", 44);
+    while(index <= MAX_CALLS){
+        if(call_tables[index].counter > 0 & sizeof(call_tables[index].name) != 0){
+            write(1, "|", 1);
+            write(1, call_tables[index].name, sizeof(call_tables[index].name));
+            write(1, "                1", 21);
+            write(1, "|\n", 2);
+            write(1, "+--------------------+--------------------+\n", 44);
+        }
+        ++index;   
+    }
 }
 
 
