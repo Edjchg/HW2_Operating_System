@@ -1,15 +1,16 @@
-#include <string.h>
-#include <unistd.h>
-#include <sys/ptrace.h>
+#include <linux/string.h>
+#include <linux/unistd.h>
+#include <linux/ptrace.h>
 #include "user_.h"
+#include <linux/types.h>
 //Modo kernel--------------
-/*
+
 #include <linux/kernel.h>
 #include <linux/syscalls.h>
 #include <linux/wait.h>
-*/
+
 //--------------------------
-//#include <sys/wait.h>
+
 #define MAXCHAR 1000
 
 int analiza(int argc, char * argv[]);
@@ -22,7 +23,8 @@ int main(int argc, char * argv[] ){
 
 int analiza(int argc, char * argv[]){
  int status; 
- pid_t pid;
+ //pid_t pid;
+ int pid;
  struct user_regs_struct regs;
  int counter = 0;
  int in_call =0;
