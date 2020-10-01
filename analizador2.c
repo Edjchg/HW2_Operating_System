@@ -1,15 +1,16 @@
-#include <string.h>
-#include <unistd.h>
-#include <sys/ptrace.h>
+#include <linux/string.h>
+#include <linux/unistd.h>
+#include <linux/ptrace.h>
 #include "user_.h"
+#include <linux/types.h>
 //Modo kernel--------------
-/*
+
 #include <linux/kernel.h>
 #include <linux/syscalls.h>
 #include <linux/wait.h>
-*/
+
 //--------------------------
-//#include <sys/wait.h>
+
 #define MAXCHAR 1000
 
 int analiza(int argc, char * argv[]);
