@@ -26,7 +26,7 @@ int main(int argc, char * argv[] ){
 
 int analiza(int argc, char * argv[]){
 struct CALL call_table[MAX_CALLS];
-
+init_call_array(call_table);
  int status; 
  //pid_t pid;
  int pid;
@@ -53,24 +53,27 @@ struct CALL call_table[MAX_CALLS];
          write(1, "Se ha detectado una llamada ", 28);
          write(1, llamada, sizeof(llamada));
          write(1, "\n", 1);
-         call_table[regs.orig_rax].name = llamada;
-         call_table[regs.orig_rax].counter++;
+         increase_call_value(call_table, regs.orig_rax);
+         //call_table[regs.orig_rax].name = llamada;
+         //call_table[regs.orig_rax].counter++;
          in_call=1;
          counter ++;
        }
        else
          in_call = 0; 
+     
      ptrace(PTRACE_SYSCALL, pid, NULL, NULL); 
      wait(&status); 
      }
    }
-   call_printer(call_table);
+   print_values(call_table);
+   //call_printer(call_table);
    //printf("Total Number of System Calls=%d\n", counter);
    return 0; 
 
 
 }
-
+/*
 int call_printer(struct CALL call_tables[MAX_CALLS]){
     int index = 0;
     write(1, "+--------------------+--------------------+\n", 44);
@@ -89,5 +92,6 @@ int call_printer(struct CALL call_tables[MAX_CALLS]){
         ++index;   
     }
 }
+*/
 
 
