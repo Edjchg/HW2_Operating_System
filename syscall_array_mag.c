@@ -40,7 +40,6 @@ int get_int_len(int number){
         i++;
         number/= 10;
     }
-        printf("Value of len is %d",i);
 
     return i;
 }
@@ -106,19 +105,19 @@ while (head[i].counter!=-1)
 }
 
 }
-int main(int argc, char * argv[] ){
-struct CALL call_table[500];
-init_call_array(call_table);
-increase_call_value(call_table,0);
-increase_call_value(call_table,0);
-increase_call_value(call_table,0);
-increase_call_value(call_table,5);
-increase_call_value(call_table,5);
-increase_call_value(call_table,5);
-increase_call_value(call_table,435);
-increase_call_value(call_table,435);
-increase_call_value(call_table,435);
-print_values(call_table);
-	return 0;
-}
+// int main(int argc, char * argv[] ){
+// struct CALL call_table[500];
+// init_call_array(call_table);
+// increase_call_value(call_table,0);
+// increase_call_value(call_table,0);
+// increase_call_value(call_table,0);
+// increase_call_value(call_table,5);
+// increase_call_value(call_table,5);
+// increase_call_value(call_table,5);
+// increase_call_value(call_table,435);
+// increase_call_value(call_table,435);
+// increase_call_value(call_table,435);
+// print_values(call_table);
+// 	return 0;
+// }
 //gcc syscall_array_mag.c

@@ -4,13 +4,13 @@
 #include "user_.h"
 #include <linux/types.h>
 //Modo kernel--------------
-
 #include <linux/kernel.h>
 //#include <linux/syscalls.h>
 #include <linux/wait.h>
 #include "call_array.h"
 //--------------------------
 #include "syscall_array_mag.h"
+#include "syscall_array_mag.c"
 #define MAXCHAR 1000
 #define MAX_CALLS 500
 
