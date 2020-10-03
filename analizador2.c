@@ -2,12 +2,14 @@
 #include <linux/unistd.h>
 #include <linux/ptrace.h>
 #include "user_.h"
+#include <stdio.h>
 #include <linux/types.h>
 //Modo kernel--------------
-
+#include <stdlib.h>
 #include <linux/kernel.h>
 //#include <linux/syscalls.h>
 #include <linux/wait.h>
+#include <linux/unistd.h>
 #include "call_array.h"
 //--------------------------
 #include "syscall_array_mag.h"
@@ -19,14 +21,29 @@
 //int call_printer(struct CALL call_table[MAX_CALLS]);
 int analiza(int argc, char * argv[]);
 void print_call(int call);
+char * get_axecutable(char * executable_params);
+char** get_params(char * executable_params);
 
+
+//MAIN
 int main(int argc, char * argv[] ){
+        if (argv[1] == NULL || argv[2] == NULL) 
+    {
+      printf("No se proveen los parametros necesarios");
+      return -1;
+    }
+ FILE *fptr = fopen(argv[1],"r");
+ if (fptr == NULL)
+ {
+   printf("El ejecutable no existe");
+ }
 	analiza(argc, argv);
 	return 0;
 }
 
 int analiza(int argc, char * argv[]){
 
+ 
 struct CALL call_table[MAX_CALLS];
 	init_call_array(call_table);
  int status; 
@@ -43,7 +60,11 @@ struct CALL call_table[MAX_CALLS];
      //exit(1);
    case 0: /* in the child process */
      ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-     execvp(argv[1], argv+1);
+
+     
+      char ** args = get_params(argv[1]);
+      char * exe = get_axecutable(argv[1]);
+      execvp(exe, args);
    default: /* in the parent process */
      wait(&status);
      while(status == 1407){
@@ -62,7 +83,6 @@ struct CALL call_table[MAX_CALLS];
          
          
          	
-         
          
          //call_table[regs.orig_rax].name = llamada;
          //call_table[regs.orig_rax].counter++;
@@ -88,25 +108,46 @@ struct CALL call_table[MAX_CALLS];
 
 
 }
-/*
-int call_printer(struct CALL call_tables[MAX_CALLS]){
-    int index = 0;
-    write(1, "+--------------------+--------------------+\n", 44);
-    write(1, "|                  Calls                  |\n", 44);
-    write(1, "+--------------------+--------------------+\n", 44);
-    write(1, "| Name               | Counter            |\n", 44);
-    write(1, "+--------------------+--------------------+\n", 44);
-    while(index <= MAX_CALLS){
-        if(call_tables[index].counter > 0 & sizeof(call_tables[index].name) != 0){
-            write(1, "|", 1);
-            write(1, call_tables[index].name, sizeof(call_tables[index].name));
-            write(1, "                1", 21);
-            write(1, "|\n", 2);
-            write(1, "+--------------------+--------------------+\n", 44);
-        }
-        ++index;   
-    }
+char * get_axecutable(char * executable_params){
+  
+  char * to_return  = malloc(sizeof(char)*100);
+  int i = 0;
+  while(i!=100){
+  to_return[i] = '\0';
+  i++;}
+  i=0;
+  while(executable_params[i]!= ',' && i!= strlen(executable_params)){
+    to_return[i] = executable_params[i];
+    i++;
+  }
+  return to_return;
 }
-*/
+char** get_params(char * executable_params){
+  char ** params = malloc(sizeof(char*)*10);
+  int i = 0;
+  while(i!=10){
+    params[i]= NULL;
+    i++;
+  }
+  i=0;
+  int j = 0;
+  int n = 0;
+  params[j] = malloc(100);
+  while(i < strlen(executable_params)){
+    if(executable_params[i] == ','){
+      params[j][n] = '\0';
+      n=0;
+      j++;
+      params[j] =malloc(100);
+      i++;
+      continue;
+    }
+    params[j][n] = executable_params[i];
+    i++;
+    n++;
+  }
+return params;
+}
+
 
 
