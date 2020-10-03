@@ -4,6 +4,7 @@
 #include "user_.h"
 #include <linux/types.h>
 //Modo kernel--------------
+
 #include <linux/kernel.h>
 //#include <linux/syscalls.h>
 #include <linux/wait.h>
@@ -15,7 +16,7 @@
 #define MAX_CALLS 500
 
 
-int call_printer(struct CALL call_table[MAX_CALLS]);
+//int call_printer(struct CALL call_table[MAX_CALLS]);
 int analiza(int argc, char * argv[]);
 void print_call(int call);
 
@@ -25,8 +26,9 @@ int main(int argc, char * argv[] ){
 }
 
 int analiza(int argc, char * argv[]){
+
 struct CALL call_table[MAX_CALLS];
-init_call_array(call_table);
+	init_call_array(call_table);
  int status; 
  //pid_t pid;
  int pid;
@@ -49,11 +51,19 @@ init_call_array(call_table);
        if(!in_call){
        	 //Descomentar en compilacion de kernel.
          //printk("La llamada que hizo el subproceso es: %lli \n", regs.orig_rax);
-         const char *llamada = getcall(regs.orig_rax);
-         write(1, "Se ha detectado una llamada ", 28);
-         write(1, llamada, sizeof(llamada));
-         write(1, "\n", 1);
-         increase_call_value(call_table, regs.orig_rax);
+         if (*argv[2] == '1'){
+         	const char *llamada = getcall(regs.orig_rax);
+         	write(1, "Se ha detectado una llamada ", 28);
+         	write(1, llamada, sizeof(llamada));
+         	write(1, "\n", 1);
+         }else if(*argv[2] == '2'){
+         	increase_call_value(call_table, regs.orig_rax);
+         }
+         
+         
+         	
+         
+         
          //call_table[regs.orig_rax].name = llamada;
          //call_table[regs.orig_rax].counter++;
          in_call=1;
@@ -63,10 +73,15 @@ init_call_array(call_table);
          in_call = 0; 
      
      ptrace(PTRACE_SYSCALL, pid, NULL, NULL); 
+     
+     
      wait(&status); 
      }
    }
-   print_values(call_table);
+   if(*argv[2] == '2'){
+   		print_values(call_table);
+   }
+   
    //call_printer(call_table);
    //printf("Total Number of System Calls=%d\n", counter);
    return 0; 
