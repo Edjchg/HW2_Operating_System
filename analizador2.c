@@ -108,6 +108,11 @@ struct CALL call_table[MAX_CALLS];
 
 
 }
+/**
+ * Parsea los valores de un ejecutable, en este caso solo extrae el ejecutable
+ * @param executable_params
+ * @return
+ */
 char * get_axecutable(char * executable_params){
   
   char * to_return  = malloc(sizeof(char)*100);
@@ -122,6 +127,11 @@ char * get_axecutable(char * executable_params){
   }
   return to_return;
 }
+/**
+ * Obtiene todos  los parametros de un ejecutable
+ * @param executable_params
+ * @return
+ */
 char** get_params(char * executable_params){
   char ** params = malloc(sizeof(char*)*10);
   int i = 0;

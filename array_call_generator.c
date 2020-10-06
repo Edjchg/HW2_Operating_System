@@ -53,11 +53,19 @@ void get_name(char* source, char* result){
     }
 
 }
+/**
+ * Hace reset a una string
+ * @param string
+ * @param size
+ */
 void reset_str(char * string,int size){
     while ( (size = size-1)!=0 ){
         string[size] = '\0';
     }
 }
+/**
+ * Crea un archivo con todas las llamadas
+ */
 void create_array_file(){
     FILE *fp;
     char str[1024];
@@ -96,9 +104,9 @@ void create_array_file(){
     close(fp);
 }
 
-int main ( int argc, char * argv[] )
-{
-    printf("%s,%s",getcall(0),getcall(435));
-create_array_file();
-}
+// int main ( int argc, char * argv[] )
+// {
+//     printf("%s,%s",getcall(0),getcall(435));
+// create_array_file();
+// }
 

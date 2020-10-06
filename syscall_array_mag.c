@@ -7,7 +7,10 @@
 #include <linux/string.h>
 #include "syscall_array_mag.h"
 #include "call_array.h"
-
+/**
+ * Inicializa un array de estructuras que contiene todo lo necesario para el manejo de llamadas
+ * @param head
+ */
 void init_call_array(struct CALL * head){
     int i  = 0;
     while (i!= UPPER_LIMIT ){
@@ -23,6 +26,11 @@ void init_call_array(struct CALL * head){
     }
     head[i - (424 -334) +1].counter = -1;
 }
+/**
+ * Aumenta el valor de una llamada basada en su numero
+ * @param head
+ * @param call_num
+ */
 void increase_call_value(struct CALL * head,int call_num){
     if (call_num >=436 || (call_num<424 && call_num>=UPPER_LIMIT ))
     {
@@ -33,6 +41,11 @@ void increase_call_value(struct CALL * head,int call_num){
      }
      head[call_num].counter++;
 }
+/**
+ * Consigue el largo de un numero
+ * @param number
+ * @return
+ */
 int get_int_len(int number){
     int  i = 1;
     while (number >= 10)
@@ -43,6 +56,11 @@ int get_int_len(int number){
 
     return i;
 }
+/**
+ * Convierte un integer a un string
+ * @param str_target
+ * @param number
+ */
 void convert_int(char * str_target,int number){
     int i, rem, len = 0, n;
  
@@ -60,6 +78,10 @@ void convert_int(char * str_target,int number){
     }
     str_target[len] = '\0';
 }
+/**
+ * Hace print al nombre de una llamada
+ * @param call_name
+ */
 void print_call_name(char * call_name){
     char space[] ={'|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|','\0'};
      int i = 0;
@@ -70,7 +92,10 @@ void print_call_name(char * call_name){
      }
          write(1, space, strlen(space));
 
-}
+}/**
+ * Hace print al numero de la llamada
+ * @param num
+ */
 void print_call_num(int num){
     char target[20];
     convert_int(target,num);
@@ -83,6 +108,10 @@ void print_call_num(int num){
      }
     write(1, space, strlen(space));
 }
+/**
+ * Hace print a todas las llamadas que hayan sido invocadas al menos una vez
+ * @param head
+ */
 void print_values(struct CALL * head){
 int i = 0;
     write(1, "+--------------------+--------------------+\n", 44);
